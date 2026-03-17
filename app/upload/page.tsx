@@ -204,18 +204,18 @@ export default function UploadPage() {
               </div>
 
               <div className="space-y-4">
-                {files.map((uploadFile) => (
+                {files.map((file) => (
                   <div
-                    key={uploadFile.id}
+                    key={file.id}
                     className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700"
                   >
                     <div className="flex gap-6">
-                      {uploadFile.preview && (
+                      {file.preview && (
                         <div className="w-32 h-32 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-900 flex-shrink-0">
-                          {uploadFile.file.type.startsWith('video/') ? (
-                            <video src={uploadFile.preview} className="w-full h-full object-cover" />
+                          {file.file.type.startsWith('video/') ? (
+                            <video src={file.preview} className="w-full h-full object-cover" />
                           ) : (
-                            <img src={uploadFile.preview} alt="" className="w-full h-full object-cover" />
+                            <img src={file.preview} alt="" className="w-full h-full object-cover" />
                           )}
                         </div>
                       )}
@@ -225,15 +225,15 @@ export default function UploadPage() {
                           <div className="flex-1">
                             <input
                               type="text"
-                              value={uploadFile.title}
-                              onChange={(e) => updateFile(uploadFile.id, { title: e.target.value })}
+                              value={file.title}
+                              onChange={(e) => updateFile(file.id, { title: e.target.value })}
                               placeholder="标题"
                               className="w-full px-3 py-2 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
                           </div>
                           
                           <button
-                            onClick={() => removeFile(uploadFile.id)}
+                            onClick={() => removeFile(file.id)}
                             className="ml-4 p-2 text-gray-400 hover:text-red-600 transition-colors"
                           >
                             <X className="w-5 h-5" />
@@ -244,8 +244,8 @@ export default function UploadPage() {
                           <div>
                             <label className="block text-sm font-medium mb-2">品牌</label>
                             <select
-                              value={uploadFile.brandId}
-                              onChange={(e) => updateFile(uploadFile.id, { brandId: e.target.value })}
+                              value={file.brandId}
+                              onChange={(e) => updateFile(file.id, { brandId: e.target.value })}
                               className="w-full px-3 py-2 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             >
                               <option value="">选择品牌</option>
@@ -259,8 +259,8 @@ export default function UploadPage() {
                             <label className="block text-sm font-medium mb-2">应用名称</label>
                             <input
                               type="text"
-                              value={uploadFile.appName}
-                              onChange={(e) => updateFile(uploadFile.id, { appName: e.target.value })}
+                              value={file.appName}
+                              onChange={(e) => updateFile(file.id, { appName: e.target.value })}
                               placeholder="如：Duolingo"
                               className="w-full px-3 py-2 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
@@ -275,13 +275,13 @@ export default function UploadPage() {
                                 key={type}
                                 type="button"
                                 onClick={() => {
-                                  const types = uploadFile.motionTypes.includes(type)
-                                    ? uploadFile.motionTypes.filter(t => t !== type)
-                                    : [...uploadFile.motionTypes, type];
-                                  updateFile(uploadFile.id, { motionTypes: types });
+                                  const types = file.motionTypes.includes(type)
+                                    ? file.motionTypes.filter(t => t !== type)
+                                    : [...file.motionTypes, type];
+                                  updateFile(file.id, { motionTypes: types });
                                 }}
                                 className={`px-3 py-1 text-sm rounded-full transition-colors ${
-                                  uploadFile.motionTypes.includes(type)
+                                  file.motionTypes.includes(type)
                                     ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400'
                                     : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600'
                                 }`}
@@ -300,13 +300,13 @@ export default function UploadPage() {
                                 key={style}
                                 type="button"
                                 onClick={() => {
-                                  const styles = uploadFile.styles.includes(style)
-                                    ? uploadFile.styles.filter(s => s !== style)
-                                    : [...uploadFile.styles, style];
-                                  updateFile(uploadFile.id, { styles });
+                                  const styles = file.styles.includes(style)
+                                    ? file.styles.filter(s => s !== style)
+                                    : [...file.styles, style];
+                                  updateFile(file.id, { styles });
                                 }}
                                 className={`px-3 py-1 text-sm rounded-full transition-colors ${
-                                  uploadFile.styles.includes(style)
+                                  file.styles.includes(style)
                                     ? 'bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400'
                                     : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600'
                                 }`}
@@ -317,38 +317,38 @@ export default function UploadPage() {
                           </div>
                         </div>
 
-                        {uploadFile.status === 'uploading' && (
+                        {file.status === 'uploading' && (
                           <div className="space-y-2">
                             <div className="flex items-center justify-between text-sm">
                               <span className="text-gray-600 dark:text-gray-400">上传中...</span>
-                              <span className="text-gray-600 dark:text-gray-400">{uploadFile.progress}%</span>
+                              <span className="text-gray-600 dark:text-gray-400">{file.progress}%</span>
                             </div>
                             <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                               <div
                                 className="bg-blue-600 h-2 rounded-full transition-all duration-300"
-                                style={{ width: `${uploadFile.progress}%` }}
+                                style={{ width: `${file.progress}%` }}
                               />
                             </div>
                           </div>
                         )}
 
-                        {uploadFile.status === 'success' && (
+                        {file.status === 'success' && (
                           <div className="flex items-center gap-2 text-green-600 dark:text-green-400">
                             <Check className="w-5 h-5" />
                             <span className="text-sm">上传成功</span>
                           </div>
                         )}
 
-                        {uploadFile.status === 'error' && (
+                        {file.status === 'error' && (
                           <div className="flex items-center gap-2 text-red-600 dark:text-red-400">
                             <X className="w-5 h-5" />
                             <span className="text-sm">上传失败</span>
                           </div>
                         )}
 
-                        {uploadFile.status === 'pending' && (
+                        {file.status === 'pending' && (
                           <button
-                            onClick={() => uploadFile(uploadFile)}
+                            onClick={() => uploadFile(file)}
                             className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors text-sm"
                           >
                             立即上传
